@@ -20,7 +20,7 @@
   },
   "adminBot": [
     "100057678948022",
-    "100045823417357"
+    "61560865283313"
     
   ],
   "whiteListMode": {
@@ -29,7 +29,7 @@
     "notes": "if you enable this feature, only the ids in the whiteListIds section can use the bot"
   },
   "nickNameBot": "Tomago-Mehir Apa🥷📝",
-  "prefix": "+",
+  "prefix": "-",
   "database": {
     "type": "sqlite",
     "uriMongodb": "",
