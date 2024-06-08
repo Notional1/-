@@ -5,7 +5,7 @@ const path = require('path');
 module.exports = {
   config: {
     name: "dalle3",
-    aliases: ["dalle","bing","create","imagine"],
+    aliases: ["dalle","bing","create","emagine"],
     version: "1.0",
     author: "Dipto",
     countDown: 15,
