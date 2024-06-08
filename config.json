@@ -28,8 +28,8 @@
     "whiteListIds": [],
     "notes": "if you enable this feature, only the ids in the whiteListIds section can use the bot"
   },
-  "nickNameBot": "Tomago-Mehir Apa🥷📝",
-  "prefix": "-",
+  "nickNameBot": "Tomago-Mehir Apa🧕",
+  "prefix": "+",
   "database": {
     "type": "sqlite",
     "uriMongodb": "",
