@@ -5,16 +5,16 @@ module.exports = {
     name: "imgur",
     version: "1.0",
     author: "otinxsandip",
-    countDown: 1,
+    countDown: 5,
     role: 0,
     longDescription: "Imgur link",
-    category: "utility",
+    category: "image",
     guide: {
       en: "${pn} reply to image"
     }
   },
 
-  onStart: async function ({ message, api, event }) {  
+  onStart: async function ({ message, api, event }) {
 
     const puti = event.messageReply?.attachments[0]?.url;
 
@@ -28,7 +28,7 @@ module.exports = {
       return message.reply(lado);
     } catch (error) {
       console.error(error);
-      return message.reply('api sucks bro.');
+      return message.reply('API Error bro.');
     }
   }
 };
