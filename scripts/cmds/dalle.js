@@ -1,65 +1,54 @@
-const axios = require("axios");
-const fs = require("fs-extra");
-const path = require("path");
+const axios = require('axios');
+const fs = require('fs-extra');
+const path = require('path');
 
 module.exports = {
   config: {
     name: "dalle",
-    version: "1.0.2",
-    author: "Rehat86@তুরতুল",
+    aliases: ["dalle","bing","create","],
+    version: "1.0",
+    author: "Dipto",
+    countDown: 15,
     role: 0,
-    countDown: 5,
-    longDescription: {
-      en: "Generate images using dalle 3"
-    },
-    category: "ai",
+    shortDescription: "Generate images powerby by Dalle3",
+    longDescription: "Generate images by Unofficial Dalle3",
+    category: "download",
     guide: {
-      en: "{pn} <prompt>"
+      en: "{pn} prompt"
     }
   },
 
-  onStart: async function ({ api, event, args, message }) {
-    const permission = ["100057678948022"];
-    if (!permission.includes(event.senderID)) {
-      api.sendMessage(
-        "~Oh Baka! Seems you don't have permission to use this command!🐱",
-        event.threadID,
-        event.messageID
-      );
-      return;
-    }
-
-    const keySearch = args.join(" ");
-if (!keySearch) return message.reply("Add something baka.");
-    message.reply("Please wait...⏳");
-
+  onStart: async function ({ api, event, args }) {
+  const prompt = event.messageReply?.body.split("dalle")[1] ||  args.join(" ");
+  if (!prompt) {
+   return api.sendMessage("❌| Wrong Formet .✅ | Use 17/18 years old boy/girl watching football match on tv and written Dipto and 69 on the back of his Dress , 4k",event.threadID,event.messageID);
+  }
     try {
-        const res = await axios.get(`https://api-turtle.onrender.com/api/dalle?prompt=${keySearch}&cookie=1joTLu3Y8pQTj8zL7wqTEKnb-8hDfgqdnHoDPTdSQs1HOSN0KtdVaVWY5oiSgklGX18ZgZDUnlue-opqbQN2KIJN7qftrrTe3r9NskfhuPXu_ZEQsncyrEVGP6sCxVHdNed8ZxrJ0zt2lhInbMBx2Po7CQUzwA54BwELU6dz2nnDLMG-5eGHFNpxfNZRUfDKqwBUhTxC3jdt2CvTnvxmZOA`);
-        const data = res.data.result; // Change from res.data.results.images to res.data.result
+      const fff = ["1wFVcn7gqiAXxkid2zhUh2O9kuxhAl4qUJUPqPbrkoVJ2lDyNCCz3Lp-nJH_zGByhscXFWs8ctWRl9iqhuIl2taub04ffT4wuB1fH5IWF88UqmyHqVoZyhPUQ9u2necHkO1kSKoTN4BZkic0jpQY5tlv9WFOAEbnmviZejMOTqQ4t42dytybdqkgOdCUEDoOcMjhjF_N_G_rIUmz44fZRpQ"]
+        const col = fff[Math.floor(Math.random() * fff.length)]
+      const w = await api.sendMessage("Wait koro baby < 😽", event.threadID);
 
-        if (!data || data.length === 0) {
-            api.sendMessage("An error occurred.", event.threadID, event.messageID);
-            return;
-        }
-
-        const imgData = [];
-        for (let i = 0; i < data.length; i++) { // No need to limit to Math.min(numberSearch, data.length)
-            const imgUrl = data[i];
-            const imgResponse = await axios.get(imgUrl, { responseType: 'arraybuffer' });
-            const imgPath = path.join(__dirname, 'cache', `${i + 1}.jpg`);
-            await fs.outputFile(imgPath, imgResponse.data);
-            imgData.push(fs.createReadStream(imgPath));
-        }
-
-        await api.sendMessage({
-            attachment: imgData,
-        }, event.threadID, event.messageID);
-
+const response = await axios.get(`https://xnil-apis.onrender.com/api/bing?prompt=${prompt}&cookie=${col}`)
+      const data = response.data.img;
+      if (!data || data.length === 0) {
+        api.sendMessage("Empty response or no images generated.",event.threadID,event.messageID);
+      }
+      const diptoo = [];
+      for (let i = 0; i < data.length; i++) {
+        const imgUrl = data[i];
+        const imgResponse = await axios.get(imgUrl, { responseType: 'arraybuffer' });
+        const imgPath = path.join(__dirname, 'cache', `${i + 1}.jpg`);
+        await fs.outputFile(imgPath, imgResponse.data);
+        diptoo.push(fs.createReadStream(imgPath));
+      }
+      await api.unsendMessage(w.messageID);
+      await api.sendMessage({
+  body: `✅ | Naw babu tumar Generated Photo<😘🐧`,
+        attachment: diptoo
+      },event.threadID, event.messageID);
     } catch (error) {
-        console.error(error);
-        api.sendMessage("An error occurred.", event.threadID, event.messageID);
-    } finally {
-        await fs.remove(path.join(__dirname, 'cache'));
+      console.error(error);
+      await api.sendMessage(`Generation failed!\nError: ${error.message}`,event.threadID, event.messageID);
     }
   }
 }
