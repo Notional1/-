@@ -6,7 +6,7 @@ const yts = require('yt-search');
 module.exports = {
   config: {
     name: 'music',
-    aliases: [`s`],
+    aliases: [`m`],
     version: '2.0',
     role: 0,
     author: 'MR.SANNY',//Command modified by Aryan Chauhan don't change my author name
@@ -85,7 +85,7 @@ module.exports = {
         api.setMessageReaction('✅', event.messageID, () => { }, true);
 
         const message = {
-          body: `┏━━━━━━━━━━━━━━❀\n🎶𝗬𝗧-𝗦𝗧𝗨𝗗𝗜𝗢\n\n🎵𝗧𝗜𝗧𝗟𝗘\n[ ${music.title} ]\n\n⏳𝗗𝗨𝗥𝗔𝗧𝗜𝗢𝗡\n[ ${musicDuration} ]\n\n🖇️ 𝗙𝗜𝗟𝗘 𝗦𝗜𝗭𝗘\n[ ${fileSize} ]\n\n⚙️ 𝗨𝗦𝗘𝗥 𝗨𝗜𝗗\n[ ${event.senderID} ]\n❣️ 𝗧𝗵𝗮𝗻𝗸 𝘆𝗼𝘂 𝗳𝗼𝗿 𝘂𝘀𝗶𝗻𝗴 𝗢𝗿𝗼𝗰𝗵𝗶 𝗔𝗶\n😗 𝗟𝗼𝘃𝗲 𝘆𝗼𝘂 𝗮𝗹𝗹\n┗━━━━━━━━━━━━━━❀`,
+          body: `┏━━━━━━━━━━━━━━❀\n🎶𝗬𝗧-𝗦𝗧𝗨𝗗𝗜𝗢\n\n🎵𝗧𝗜𝗧𝗟𝗘\n[ ${music.title} ]\n\n⏳𝗗𝗨𝗥𝗔𝗧𝗜𝗢𝗡\n[ ${musicDuration} ]\n\n🖇️ 𝗙𝗜𝗟𝗘 𝗦𝗜𝗭𝗘\n[ ${fileSize} ]\n\n⚙️ 𝗨𝗦𝗘𝗥 𝗨𝗜𝗗\n[ ${event.senderID} ]\n❣️ 𝗧𝗵𝗮𝗻𝗸 𝘆𝗼𝘂 𝗳𝗼𝗿 𝘂𝘀𝗶𝗻𝗴 𝗠𝗥 𝗦𝗮𝗻𝘆 𝗔𝗶\n😗 𝗟𝗼𝘃𝗲 𝘆𝗼𝘂 𝗮𝗹𝗹\n┗━━━━━━━━━━━━━━❀`,
           attachment: fs.createReadStream(filePath),
         };
 
