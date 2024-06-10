@@ -1,109 +1,54 @@
-const axios = require("axios");
-const fs = require("fs-extra");
+const axios = require ("axios");
+const fs = require ("fs-extra");
+
 module.exports = {
- config: {
- name: "pair2",
- aliases: ['pair'],
- countDown: 10,
- role: 0,
- shortDescription: {
- en: "Get to know your partner",
- },
- longDescription : {
- en: "Know your destiny and know who you will complete your life with",
- },
- category: "love",
- guide: {
- en: "{pn}"
- }
-},
-onStart: async function ({ api, args, message, event, threadsData, usersData, dashBoardData, globalData, threadModel, userModel, dashBoardModel, globalModel, role, commandName, getLang }) {
-const { loadImage, createCanvas } = require("canvas");
- let pathImg = __dirname + "/assets/background.png";
- let pathAvt1 = __dirname + "/assets/any.png";
- let pathAvt2 = __dirname + "/assets/avatar.png";
- 
- var id1 = event.senderID;
- var name1 = await usersData.getName(id1);
- var ThreadInfo = await api.getThreadInfo(event.threadID);
- var all = ThreadInfo.userInfo
- for (let c of all) {
- if (c.id == id1) var gender1 = c.gender;
- };
- const botID = api.getCurrentUserID();
- let ungvien = [];
- if(gender1 == "FEMALE"){
- for (let u of all) {
- if (u.gender == "MALE") {
- if (u.id !== id1 && u.id !== botID) ungvien.push(u.id)
- }
- }
- }
- else if(gender1 == "MALE"){
- for (let u of all) {
- if (u.gender == "FEMALE") {
- if (u.id !== id1 && u.id !== botID) ungvien.push(u.id)
- }
- }
- }
- else {
- for (let u of all) {
- if (u.id !== id1 && u.id !== botID) ungvien.push(u.id)
- }
- }
- var id2 = ungvien[Math.floor(Math.random() * ungvien.length)];
- var name2 = await usersData.getName(id2);
- var rd1 = Math.floor(Math.random() * 100) + 1;
- var cc = ["0", "-1", "99,99", "-99", "-100", "101", "0,01"];
- var rd2 = cc[Math.floor(Math.random() * cc.length)];
- var djtme = [`${rd1}`, `${rd1}`, `${rd1}`, `${rd1}`, `${rd1}`, `${rd2}`, `${rd1}`, `${rd1}`, `${rd1}`, `${rd1}`];
- 
- var tile = djtme[Math.floor(Math.random() * djtme.length)];
+  config: {
+    name: "pair2",
+    version: "1.0",
+    author: "𝖬𝖱.𝖲𝖠𝖭𝖭𝖸",//Command modified by Aryan Chauhan don't change my author name
+    countDown: 0,
+    role: 0,
+    shortDescription: "Find Your Wife ",
+    longDescription: "Non - description",
+    category: "𝗣𝗔𝗜𝗥",
+    guide: ".pair"
+  },
 
- var background = [
- "https://i.ibb.co/RBRLmRt/Pics-Art-05-14-10-47-00.jpg"
- ];
- 
- let getAvtmot = (
- await axios.get( `https://graph.facebook.com/${id1}/picture?width=720&height=720&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`,
- { responseType: "arraybuffer" }
- )
- ).data;
- fs.writeFileSync(pathAvt1, Buffer.from(getAvtmot, "utf-8"));
+  onStart: async function({ api, event, threadsData, usersData }) {
 
- let getAvthai = (
- await axios.get( `https://graph.facebook.com/${id2}/picture?width=720&height=720&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`,
- { responseType: "arraybuffer" }
- )
- ).data;
- fs.writeFileSync(pathAvt2, Buffer.from(getAvthai, "utf-8"));
+    const { threadID, messageID, senderID } = event;
+    const { participantIDs } = await api.getThreadInfo(threadID);
+    var tle = Math.floor(Math.random() * 101);
+    var namee = (await usersData.get(senderID)).name
+    const botID = api.getCurrentUserID();
+    const listUserID = participantIDs.filter(ID => ID != botID && ID != senderID);
+    var id = listUserID[Math.floor(Math.random() * listUserID.length)];
+    var name = (await usersData.get(id)).name
+    var arraytag = [];
+    arraytag.push({ id: senderID, tag: namee });
+    arraytag.push({ id: id, tag: name });
 
- let getbackground = (
- await axios.get(`${background}`, {
- responseType: "arraybuffer",
- })
- ).data;
- fs.writeFileSync(pathImg, Buffer.from(getbackground, "utf-8"));
+    let Avatar = (await axios.get(`https://graph.facebook.com/${senderID}/picture?width=512&height=512&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`, { responseType: "arraybuffer" })).data;
+    fs.writeFileSync(__dirname + "/cache/avt.png", Buffer.from(Avatar, "utf-8"));
 
- let baseImage = await loadImage(pathImg);
- let baseAvt1 = await loadImage(pathAvt1);
- let baseAvt2 = await loadImage(pathAvt2);
- let canvas = createCanvas(baseImage.width, baseImage.height);
- let ctx = canvas.getContext("2d");
- ctx.drawImage(baseImage, 0, 0, canvas.width, canvas.height);
- ctx.drawImage(baseAvt1, 111, 175, 330, 330);
- ctx.drawImage(baseAvt2, 1018, 173, 330, 330);
- const imageBuffer = canvas.toBuffer();
- fs.writeFileSync(pathImg, imageBuffer);
- fs.removeSync(pathAvt1);
- fs.removeSync(pathAvt2);
- return api.sendMessage({ body: `Congratulations ${name1}'Looks like your destiny brought you together with ${name2}Your link percentage is ${tile}%🫣`,
- mentions: [{
- tag: `${name2}`,
- id: id2
- },{tag: `${name1}`, id: id1 }], attachment: fs.createReadStream(pathImg) },
- event.threadID,
- () => fs.unlinkSync(pathImg),
- event.messageID);
-}
-}
+    let gifLove = (await axios.get(`https://i.imgur.com/HXhHI8y.gif`, { responseType: "arraybuffer" })).data;
+    fs.writeFileSync(__dirname + "/cache/giflove.png", Buffer.from(gifLove, "utf-8"));
+
+    let Avatar2 = (await axios.get(`https://graph.facebook.com/${id}/picture?width=512&height=512&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`, { responseType: "arraybuffer" })).data;
+    fs.writeFileSync(__dirname + "/cache/avt2.png", Buffer.from(Avatar2, "utf-8"));
+
+    var imglove = [];
+
+    imglove.push(fs.createReadStream(__dirname + "/cache/avt.png"));
+    imglove.push(fs.createReadStream(__dirname + "/cache/giflove.png"));
+    imglove.push(fs.createReadStream(__dirname + "/cache/avt2.png"));
+
+    var msg = {
+      body: `❣ 𝗖𝗢𝗡𝗚𝗥𝗔𝗧𝗨𝗟𝗔𝗧𝗜𝗢𝗕𝗦 𝗖𝗨𝗧𝗘 𝗖𝗢𝗨𝗣𝗟𝗘\n\n┏━━━━━━━━━━━━♥\n😽 𝗬𝗢𝗨𝗥 𝗟𝗢𝗩𝗘 𝗣𝗥𝗘𝗖𝗘𝗡𝗧𝗔𝗚𝗘\n➤ ${tle}%\n┗━━━━━━━━━━━━💝\n┏━━━━━━━━━━━━💛\n👑 𝗟𝗢𝗩𝗘𝗥 𝗡𝗔𝗠𝗘\n➤ ${namee}\n┗━━━━━━━━━━━━💚\n┏━━━━━━━━━━━━💜\n😘 𝗜 𝗟𝗢𝗩𝗘 𝗬𝗢𝗨\n➤  ${name}\n┗━━━━━━━━━━━━💙\n┏━━━━━━━━━━━━❀\n😻 𝗟𝗢𝗩𝗘 𝗤𝗨𝗢𝗧𝗘\n➤ 𝖬𝗒 𝗅𝗈𝗏𝖾 ${name} 𝖿𝗈𝗋 𝗒𝗈𝗎 𝗂𝗌 𝗅𝗂𝗄𝖾 𝖺 𝗇𝖾𝗏𝖾𝗋-𝖾𝗇𝖽𝗂𝗇𝗀 𝖽𝖺𝗇𝖼𝖾, 𝗀𝗋𝖺𝖼𝖾𝖿𝗎𝗅𝗅𝗒 𝗆𝗈𝗏𝗂𝗇𝗀 𝗍𝗁𝗋𝗈𝗎𝗀𝗁 𝗍𝗁𝖾 𝗁𝗂𝗀𝗁𝗌 𝖺𝗇𝖽 𝗅𝗈𝗐𝗌 𝗈𝖿 𝗅𝗂𝖿𝖾. 💃🕺💞\n┗━━━━━━━━━━━━💛\n┏━━━━━━━━━━━━😗\n😞 𝗨𝗡𝗗𝗘𝗥𝗦𝗧𝗔𝗗𝗜𝗡𝗚\n➤ 𝖫𝗈𝗏𝖾 𝗂𝗌 𝖺 𝗅𝖺𝗇𝗀𝗎𝖺𝗀𝖾 𝗌𝗉𝗈𝗄𝖾𝗇 𝖻𝗒 𝖾𝗏𝖾𝗋𝗒𝗈𝗇𝖾 𝖻𝗎𝗍 𝗎𝗇𝖽𝖾𝗋𝗌𝗍𝗈𝗈𝖽 𝗈𝗇𝗅𝗒 𝖻𝗒 𝗍𝗁𝖾 𝗁𝖾𝖺𝗋𝗍. ❤✨\n┗━━━━━━━━━━━━🍒`,
+      mentions: arraytag,
+      attachment: imglove
+    };
+
+    return api.sendMessage(msg, event.threadID, event.messageID);
+  }
+};
