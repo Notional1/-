@@ -4,7 +4,7 @@ module.exports = {
   config: {
     name: "generate",
     version: "1.1",
-    author: "ArYAN",
+    author: "𝖬𝖱.𝖲𝖠𝖭𝖭𝖸",
     countDown: 10,
     role: 0,
     shortDescription: {
@@ -47,7 +47,7 @@ module.exports = {
         message.unsend(ui);
         const attachments = await Promise.all(images.map(img => global.utils.getStreamFromURL(img)));
         message.reply({
-          body: `🖼 Generate\n━━━━━━━━━━━━\n\nHere are the images generated based on your prompt: "${prompt}". If you have further requests, feel free to ask!`,
+          body: `🔰𝖦𝖤𝖭𝖤𝖱𝖠𝖳𝖤𝖵𝖠 𝖯𝖧𝖮𝖳𝖮 🖼️\n━━━━━━━━━━━━\n\nHere are the images generated based on your prompt: "${prompt}". If you have further requests, feel free to ask!`,
           attachment: attachments
         });
       } catch (error) {
