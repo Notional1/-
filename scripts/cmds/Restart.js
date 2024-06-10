@@ -7,7 +7,7 @@ module.exports = {
 		version: "1.0",
 		author: "MR.SANNY",
 		countDown: 1,
-		role: 0,
+		role: 2,
 		shortDescription: {
 			vi: "Khởi động lại bot",
 			en: "Restart bot"
@@ -36,7 +36,7 @@ module.exports = {
 		const pathFile = `${__dirname}/tmp/restart.txt`;
 		if (fs.existsSync(pathFile)) {
 			const [tid, time] = fs.readFileSync(pathFile, "utf-8").split(" ");
-			api.sendMessage(`✅ 𝗥𝗘𝗦𝗧𝗔𝗥𝗧𝗘𝗗\n\n🤖 MR SANNY AI Has Been Successfully Restarted\n\n🔴𝗧𝗔𝗞𝗘 𝗧𝗜𝗠𝗘\n➤  ❍ ?? ❍\n\n💞 𝗧𝗛𝗔𝗡𝗞𝗦 𝗔 𝗟𝗢𝗧\n➤ Thank you soo much for restaring MR SANNY Ai now SANNY will wake for 10 minutes.If you wanna to SANNY he will stay with you.So do nothing but use restart Command every 10 minutes.Thank you for your support 🥀`, tid);
+			api.sendMessage(`✅ 𝗥𝗘𝗦𝗧𝗔𝗥𝗧𝗘𝗗\n\n🤖 Mr SaNy AI Has Been Successfully Restarted\n\n🔴𝗧𝗔𝗞𝗘 𝗧𝗜𝗠𝗘\n➤  ❍ ?? ❍\n\n💞 𝗧𝗛𝗔𝗡𝗞𝗦 𝗔 𝗟𝗢𝗧\n➤ Thank you soo much for restaring Mr SaNnY Ai now SANNY will wake for 10 minutes.If you wanna to SANNY he will stay with you.So do nothing but use restart Command every 10 minutes.Thank you for your support 🥀`, tid);
 			fs.unlinkSync(pathFile);
 		}
 	},
