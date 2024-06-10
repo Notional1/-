@@ -1,50 +1,48 @@
 const fs = require("fs-extra");
 
 module.exports = {
-	config: {
-		name: "restart",
-    aliases: [`r`],
-		version: "1.0",
-		author: "MR.SANNY",
-		countDown: 1,
-		role: 2,
-		shortDescription: {
-			vi: "Khởi động lại bot",
-			en: "Restart bot"
-		},
-		longDescription: {
-			vi: "Khởi động lại bot",
-			en: "Restart bot"
-		},
-		category: "Owner",
-		guide: {
-			vi: "   {pn}: Khởi động lại bot",
-			en: "   {pn}: Restart bot"
-		}
-	},
+  config: {
+    name: "rst",
+    version: "1.1",
+    author: "NTKhang",
+    countDown: 5,
+    role: 2,
+    description: {
+      vi: "Khởi động lại bot",
+      en: "Restart bot"
+    },
+    category: "Owner",
+    guide: {
+      vi: "   {pn}: Khởi động lại bot",
+      en: "   {pn}: Restart bot"
+    }
+  },
 
-	langs: {
-		vi: {
-			restartting: "🔄 | Đang khởi động lại bot..."
-		},
-		en: {
-			restartting: "🔄 𝗥𝗘𝗦𝗧𝗔𝗥𝗧𝗜𝗡𝗚 𝗦𝗬𝗦𝗧𝗘𝗠\n┏━━━━━━━━━━━━━❀\n➤ ✅ Successfully Sent Msg To Restart System\n➤ 🔄 MR SANNY AI Is Now Restarting Please wait for Few minutes\n➤ Server is Take New Moments\n➤ Have A Great Time UwU 🥀💘\n┗━━━━━━━━━━━━━❀"
-		}
-	},
+  langs: {
+    vi: {
+      restartting: "⚪🔴🟢 ‖ Đang khởi động lại bot..."
+    },
+    en: {
+      restartting: "⚪🔴⚫ ‖ M̑̈ R̆̈ • S̑̈ Ă̈ N̑̈ Y̆̈‖ 𝐑𝐞𝐬𝐭𝐚𝐫𝐭𝐢𝐧𝐠 𝐁𝐨𝐭..."
+    }
+  },
 
-	onLoad: function ({ api }) {
-		const pathFile = `${__dirname}/tmp/restart.txt`;
-		if (fs.existsSync(pathFile)) {
-			const [tid, time] = fs.readFileSync(pathFile, "utf-8").split(" ");
-			api.sendMessage(`✅ 𝗥𝗘𝗦𝗧𝗔𝗥𝗧𝗘𝗗\n\n🤖 Mr SaNy AI Has Been Successfully Restarted\n\n🔴𝗧𝗔𝗞𝗘 𝗧𝗜𝗠𝗘\n➤  ❍ ?? ❍\n\n💞 𝗧𝗛𝗔𝗡𝗞𝗦 𝗔 𝗟𝗢𝗧\n➤ Thank you soo much for restaring Mr SaNnY Ai now SANNY will wake for 10 minutes.If you wanna to SANNY he will stay with you.So do nothing but use restart Command every 10 minutes.Thank you for your support 🥀`, tid);
-			fs.unlinkSync(pathFile);
-		}
-	},
+  onLoad: function ({ api }) {
+    const pathFile = `${__dirname}/tmp/restart.txt`;
+    if (fs.existsSync(pathFile)) {
+      const [tid, time] = fs.readFileSync(pathFile, "utf-8").split(" ");
+      api.sendMessage(`
+✅ | 𝐁𝐨𝐭 𝐫𝐞𝐬𝐭𝐚𝐫𝐭𝐞𝐝 𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲...
+⏰ | 𝐓𝐢𝐦𝐞: ${(Date.now() - time) / 1000}s
+♻ | 𝐁𝐨𝐭 𝐒𝐭𝐚𝐭𝐮𝐬: 𝐀𝐜𝐭𝐢𝐯𝐞 [🟢]`, tid);
+      fs.unlinkSync(pathFile);
+    }
+  },
 
-	onStart: async function ({ message, event, getLang }) {
-		const pathFile = `${__dirname}/tmp/restart.txt`;
-		fs.writeFileSync(pathFile, `${event.threadID} ${Date.now()}`);
-		await message.reply(getLang("restartting"));
-		process.exit(2);
-	}
+  onStart: async function ({ message, event, getLang }) {
+    const pathFile = `${__dirname}/tmp/restart.txt`;
+    fs.writeFileSync(pathFile, `${event.threadID} ${Date.now()}`);
+    await message.reply(getLang("restartting"));
+    process.exit(2);
+  }
 };
