@@ -1,10 +1,11 @@
 module.exports = {
   config: {
     name: "pending",
+    aliases: [`p𝖽`],
     version: "1.0",
-    author: "لوفي",
-    countDown: 5,
-    role: 2,
+    author: "MR SANNY",//cmd modified by Aryan Chauhan don't change my author name
+    countDown: 0,
+    role: 0,
     shortDescription: {
       vi: "",
       en: ""
@@ -18,13 +19,13 @@ module.exports = {
 
 langs: {
     en: {
-        invaildNumber: "%1 is not an invalid number",
-        cancelSuccess: "Refused %1 thread!",
-        approveSuccess: "Approved successfully %1 threads!",
+        invaildNumber: "𝗜𝗡𝗩𝗔𝗟𝗘𝗗 𝗜𝗡𝗣𝗨𝗧:\n\n%1 is not an invalid number",
+        cancelSuccess: "𝗖𝗔𝗡𝗖𝗘𝗟 𝗥𝗘𝗤𝗨𝗘𝗦𝗧:\n\nRefused %1 thread!",
+        approveSuccess: "𝗔𝗣𝗣𝗥𝗢𝗩𝗘𝗗 𝗚𝗖:\n\nApproved successfully %1 threads!",
 
         cantGetPendingList: "Can't get the pending list!",
-        returnListPending: "»「PENDING」«❮ The whole number of threads to approve is: %1 thread ❯\n\n%2",
-        returnListClean: "「PENDING」There is no thread in the pending list"
+        returnListPending: "»「𝗣𝗘𝗡𝗗𝗜𝗡𝗚 𝗚𝗖」\n\n✅ ❮ The whole number of threads to approve is: %1 thread ❯\n\n%2",
+        returnListClean: "「𝗣𝗘𝗡𝗗𝗜𝗡𝗚 𝗚𝗖」\n\n❌ There is no thread in the pending list"
     }
   },
 
@@ -47,7 +48,7 @@ onReply: async function({ api, event, Reply, getLang, commandName, prefix }) {
         const index = body.split(/\s+/);
         for (const singleIndex of index) {
             if (isNaN(singleIndex) || singleIndex <= 0 || singleIndex > Reply.pending.length) return api.sendMessage(getLang("invaildNumber", singleIndex), threadID, messageID);
-            api.sendMessage(`•تم توصيل يوكي بنجاح 🫂🤍:\n\n•إنضموا إلى هنا لمعرفة للمزيد عن البوت:\nhttps://facebook.com/groups/235038219450134/\n\n•أكتب ${prefix}دخول لدخول مجموعة المسنجر 🙂🤍\n\n•أكتب ${prefix}الاوامر لعرض أوامر البوت🫂🌝🤍`, Reply.pending[singleIndex - 1].threadID);
+            api.sendMessage(`✅𝗖𝗢𝗡𝗡𝗘𝗖𝗧𝗘𝗗 𝗕𝗢𝗧\n\n🎀 Mr Sany Chatbot has been successfully connected 🫂🤍:\n\n💦  My Boss Contrack to All help: https://www.facebook.com/profile.php?id=100057678948022&mibextid=ZbWKwL\n\n📍 Type ${prefix}gc to enter the Messenger group 🙂🤍\n\n👉 Type ${prefix}commands to display the bot commands🫂🌝🤍\n\n🍒𝗠𝗥 𝗦𝗔𝗡𝗡𝗬-(𝗗𝗞)`, Reply.pending[singleIndex - 1].threadID);
             count+=1;
         }
         return api.sendMessage(getLang("approveSuccess", count), threadID, messageID);
