@@ -5,7 +5,7 @@ const path = require('path');
 module.exports = {
   config: {
     name: "circle",
-    aliases: [],
+    aliases: [ck],
     version: "1.0",
     author: "vex_Kshitiz",
     shortDescription: "add circular design in image",
