@@ -9,7 +9,7 @@ module.exports = {
     name: 'video',
     version: '2.0',
     role: 0,
-    author: 'ArYAN',
+    author: 'MR.SANNY',
     cooldowns: 0,
     longDescription: {
       en: "Download video from YouTube"
@@ -104,6 +104,4 @@ function formatFileSize(bytes) {
   if (bytes < 1024) return bytes + ' B';
   else if (bytes < 1048576) return (bytes / 1024).toFixed(2) + ' KB';
   else return (bytes / 1048576).toFixed(2) + ' MB';
- }
-
 }
