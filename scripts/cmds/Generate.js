@@ -4,69 +4,74 @@ module.exports = {
   config: {
     name: "generate",
     version: "1.1",
-    author: "𝖬𝖱.𝖲𝖠𝖭𝖭𝖸",
+    author: "MILAN",
     countDown: 10,
-    role: 0,
     shortDescription: {
-      en: 'Text to Image'
+      en: "V4 Image Generator."
     },
     longDescription: {
-      en: "Generate images from text prompts using the Bing image generation API. This tool allows users to create visual representations from descriptive text inputs. Ideal for creative projects, brainstorming, and visualization."
+      en: "Create image from your text with 4 model like midjourney."
     },
-    category: "image",
+    category: "ai",
+    role: 0,
     guide: {
-      en: '{pn} your prompt\n\nExample:\n1. {pn} a futuristic cityscape at sunset\n2. {pn} a serene mountain landscape with a river\n3. {pn} a portrait of a cyberpunk character'
+      en: "{pn} <prompt> or {pn} <prompt> | <model>\n\nHere's Available Models:\n[1]. Analog V1\n[2]. Anything V3\n[3]. Anything V4.5\n[4]. AbyssOrangeMix V3\n[5]. Deliberate V2\n[6]. Dreamlike Diffusion V1\n[7]. Dreamlike Diffusion V2\n[8]. Dreamshaper 5 baked vae\n[9]. Dreamshaper 6 baked vae\n[10]. Elldreth's Vivid\n[11]. Lyriel V1.5\n[12]. Lyriel V1.6\n[13]. MechaMix V1.0\n[14]. MeinaMix Meina V9\n[15]. Openjourney V4\n[16]. Portrait V1\n[17]. Realistic Vision V1.4\n[18]. Realistic Vision V2.0\n[19]. ReV Animated V1.2.2\n[20]. SDV1.4\n[21]. SDV1.5\n[22]. Shonin's Beautiful People V1.0\n[23]. TheAlly's Mix\n[24]. Timeless V1"
     }
-  }, 
+  },
 
-  onStart: async function ({ api, event, args, message, usersData }) {
-    const text = args.join(" ");
-    if (!text) {
-      return message.reply("❓| Please provide a prompt. For example, 'a futuristic cityscape at sunset'. This helps us generate the most accurate images for you. Ensure your prompt is descriptive enough for better results.");
-    }
+  onStart: async function ({ api, event, args, message }) {
+  const [promptPart, modelPart] = args.join(" ").split("|").map(part => part.trim());
 
-    const prompt = text;
+  if (!promptPart) return message.reply("Add something baka");
 
-    message.reply("✅| Creating your Imagination... This might take a moment. Please be patient as we bring your ideas to life.", async (err, info) => {
-      if (err) return console.error(err);
+  message.reply("✅| Creating your Imagination...", async (err, info) => {
+    let ui = info.messageID;
 
-      const ui = info.messageID;
-      api.setMessageReaction("⏳", event.messageID, () => {}, true);
-
-      try {
-        const response = await axios.get(`https://itsaryan.onrender.com/api/bing?prompt=${encodeURIComponent(prompt)}`);
-        api.setMessageReaction("✅", event.messageID, () => {}, true);
-
-        // Validate that response.data is an array
-        const images = Array.isArray(response.data) ? response.data : [];
-        
-        if (images.length === 0) {
-          throw new Error("No images returned from API. Try rephrasing your prompt or using different keywords.");
-        }
-
-        message.unsend(ui);
-        const attachments = await Promise.all(images.map(img => global.utils.getStreamFromURL(img)));
-        message.reply({
-          body: `🔰𝖦𝖤𝖭𝖤𝖱𝖠𝖳𝖤𝖵𝖠 𝖯𝖧𝖮𝖳𝖮 🖼️\n━━━━━━━━━━━━\n\nHere are the images generated based on your prompt: "${prompt}". If you have further requests, feel free to ask!`,
-          attachment: attachments
-        });
-      } catch (error) {
-        console.error(error);
-        let errorMessage = "❌ An error occurred while generating the images.";
-        if (error.response) {
-          // Server responded with a status other than 200 range
-          errorMessage += ` Server responded with status ${error.response.status}. Please try again later.`;
-        } else if (error.request) {
-          // No response was received
-          errorMessage += " No response received from the server. Please check your network connection.";
-        } else {
-          // Other errors
-          errorMessage += ` Error: ${error.message}. Please try again with a different prompt or contact support.`;
-        }
-        message.unsend(ui);
-        api.sendMessage(errorMessage, event.threadID);
-        api.setMessageReaction("❌", event.messageID, () => {}, true);
+    try {
+      let apiUrl = `https://image.restfulapi.repl.co/generatev4?prompt=${encodeURIComponent(promptPart)}`;
+      if (modelPart) {
+        apiUrl += `&model=${encodeURIComponent(modelPart)}`;
       }
-    });
-  }
+
+      const response = await axios.get(apiUrl);
+      const img = response.data.combinedImageUrl;
+      message.unsend(ui); // Unsend the "Creating your Imagination" message
+
+      message.reply({
+        body: "Here's your imagination 🖼️. Please reply with the image number (1, 2, 3, 4) to get the corresponding image in high resolution.",
+        attachment: await global.utils.getStreamFromURL(img)
+      }, async (err, info) => {
+        let id = info.messageID;
+        global.GoatBot.onReply.set(info.messageID, {
+          commandName: this.config.name,
+          messageID: info.messageID,
+          author: event.senderID,
+          imageUrls: response.data.imageUrls // Store the imageUrls in the onReply data
+        });
+      });
+    } catch (error) {
+      console.error(error);
+      api.sendMessage(`Error: ${error}`, event.threadID);
+    }
+  });
+},
+
+
+  onReply: async function ({ api, event, Reply, usersData, args, message }) {
+    const reply = parseInt(args[0]);
+    const { author, messageID, imageUrls } = Reply;
+    if (event.senderID !== author) return;
+    try {
+      if (reply >=1 && reply <= 4) {
+        const img = imageUrls[`image${reply}`];
+        message.reply({ attachment: await global.utils.getStreamFromURL(img) });
+      } else {
+        message.reply("Invalid image number. Please reply with a number between 1 and 4.");
+      }
+    } catch (error) {
+      console.error(error);
+      api.sendMessage(`Error: ${error}`, event.threadID);
+    }
+  message.unsend(Reply.messageID);
+  },
 };
