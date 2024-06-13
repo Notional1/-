@@ -26,10 +26,12 @@ module.exports = {
 			session2: "noon",
 			session3: "afternoon",
 			session4: "evening",
-			welcomeMessage: "🟢 𝘚𝘈𝘕𝘕𝘠 𝘉𝘖𝘛  are connected successfully!\n\n━━━━━━━━━━━━━━\n🎎greetings: Thank you for inviting me to the group😊\n\n𝗕𝗢𝗧 𝗽𝗿𝗲𝗳𝗶𝘅: %1\nTo view the list of commands, please enter: %1help\n𝙇𝙀𝘿𝘼𝙍:https://www.facebook.com/profile.php?id=100057678948022\n━━━━━━━━━━━━━━\nThanks for using my Bot",
-			multiple1: "𝘆𝗼𝘂",
-			multiple2: "𝘆𝗼𝘂 𝗴𝘂𝘆𝘀",
-			defaultWelcomeMessage: `𝗛𝗲𝗹𝗹𝗼  𝗻𝗶𝗴𝗴𝗮 @{userName}.\n\n𝘄𝗲𝗹𝗰𝗼𝗺𝗲 {multiple} 𝘁𝗼 𝘁𝗵𝗲 𝗰𝗵𝗮𝘁 𝗴𝗿𝗼𝘂𝗽☃️\n𝗚𝗿𝗼𝘂𝗽 𝗻𝗮𝗺𝗲:『{boxName}』\n𝗛𝗮𝘃𝗲 𝗮 𝗻𝗶𝗰𝗲 {session} 🤖\n━━━━━━━━━━━━━━\n𝙈𝙔 𝘽𝙊𝙎𝙎 𝗖𝗢𝗡𝗧𝗔𝗖𝗧:https://www.facebook.com/profile.php?id=100057678948022\n━━━━━━━━━━━━━━`
+			welcomeMessage: "Thank you for inviting me to the group!\nBot prefix: %1\nTo view the list of commands, please enter: %1help",
+			multiple1: "you",
+			multiple2: "you guys",
+			defaultWelcomeMessage: `𝙷𝚎𝚢 {userName}.\n𝚋𝚒𝚎𝚗𝚟𝚎𝚗𝚞𝚎 𝚊𝚞 𝚐𝚛𝚘𝚞𝚙𝚎: {boxName}\n𝚒𝚌𝚒 𝚝𝚘𝚞𝚝 𝚕𝚎 𝚖𝚘𝚗𝚍𝚎 𝚎𝚜𝚝 𝚕𝚎 𝚋𝚒𝚎𝚗𝚟𝚎𝚗𝚞𝚎 𝚍𝚘𝚗𝚌 𝚏𝚊𝚒𝚝 𝚌𝚘𝚖𝚖𝚎 𝚌𝚑𝚎𝚣 𝚝𝚘𝚒 𝚕𝚎𝚜 𝚜𝚙𝚊𝚖𝚜 𝚜𝚘𝚗𝚝 𝚒𝚗𝚝𝚎𝚛𝚍𝚒𝚝𝚜 𝚒𝚌𝚒🚨 𝚖𝚎𝚛𝚌𝚒  💯
+
+ 𝙀́𝙙𝙞𝙩 𝙗𝙮 𝙏𝙠 𝙅𝙤𝙚𝙡 ㋡`
 		}
 	},
 
