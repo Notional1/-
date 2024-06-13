@@ -19,7 +19,7 @@ module.exports = {
 
   onStart: async function ({ api, event }) {
     try {
-      const groupList = await api.getThreadList(10, null, ['INBOX']);
+      const groupList = await api.getThreadList(30, null, ['INBOX']);
 
       const filteredList = groupList.filter(group => group.threadName !== null);
 
