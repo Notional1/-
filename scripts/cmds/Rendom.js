@@ -1,6 +1,6 @@
 module.exports = {
   config: {
-    name: "random",
+    name: "randomm",
     role: 0,
     author: "Romim",
     countDown: 5,
