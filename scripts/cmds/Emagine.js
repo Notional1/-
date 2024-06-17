@@ -1,8 +1,8 @@
-+cmd install anigen.js const axios = require("axios");
+const axios = require("axios");
 
 module.exports = {
   config: {
-    name: "ag",
+    name: "emgine",
     version: "1.0",
     author: "ArYAN",
     countDown: 5,
