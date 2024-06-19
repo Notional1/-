@@ -1,25 +1,36 @@
+const moment = require('moment-timezone');
+
 module.exports = {
   config: {
     name: "ping",
-    aliases: ["ms"],
     version: "1.0",
-    author: "Sandu",
+    author: "©EDINST II",
     role: 0,
-    shortDescription: {
-      en: "Displays the current ping of the bot's system."
-    },
-    longDescription: {
-      en: "Displays the current ping of the bot's system."
-    },
-    category: "System",
-    guide: {
-      en: "Use {p}ping to check the current ping of the bot's system."
-    }
+    shortDescription: "Check bot and API latency",
+    category: "Utility",
+    guide: "{p}ping",
   },
-  onStart: async function ({ api, event, args }) {
-    const timeStart = Date.now();
-    await api.sendMessage("Checking Bot's ping", event.threadID);
-    const ping = Date.now() - timeStart;
-    api.sendMessage(`The current ping is ${ping}ms.`, event.threadID);
-  }
+  onStart: async function ({ api, event }) {
+    const startTime = Date.now();
+    const message = await api.sendMessage("Pinging...", event.threadID);
+    
+    const botLatency = Date.now() - startTime;
+    const apiLatency = message.timestamp - startTime;
+    const currentDate = moment().tz('Asia/Jakarta').format('YYYY-MM-DD HH:mm:ss');
+    
+    api.sendMessage({
+      body: `📅 | Date: ${currentDate}
+🌝 | Ping:
+🤖 | Bot Latency: ${botLatency}ms
+🔥 | Api Latency: ${apiLatency}.`,
+      attachment: null,
+      mentions: [{
+        tag: event.senderID,
+        id: event.senderID,
+        fromIndex: 10,
+      }]
+    }, event.threadID, message.messageID);
+    
+    api.deleteMessage(message.messageID);
+  },
 };
