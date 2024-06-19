@@ -1,8 +1,8 @@
-.cmd install dalle.js const axios = require('axios');
+const axios = require('axios');
 
 module.exports = {
   config: {
-    name: "generate",
+    name: "ostir",
     aliases: ["gnrt"],
     version: "1.1",
     author: "OtinXSandip | ArYAN", // Command re-modified by ArYAN
