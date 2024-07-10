@@ -64,17 +64,17 @@ module.exports = {
       const startIndex = (page - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;
 
-      let helpMessage = `☄️| 𝗦 𝗮 𝗡 𝗻 𝗬 ^𝗕𝗢𝗧^ ☄️\n\n`;
+      let helpMessage = `🪄| 𝗦 𝗮 𝗡 𝗻 𝗬 ^𝗕𝗢𝗧^ 🪄\n\n`;
       for (let i = startIndex; i < endIndex && i < commands.length; i++) {
         const { name, role, longDescription } = commands[i].config;
-        helpMessage += apply(`├─${role === 2 ? "👑 | " : "☄️ | "}${name}\n`, bold);
+        helpMessage += apply(`├─${role === 2 ? "👑 | " : "| "}${name}\n`, bold);
         helpMessage += apply(`│    ${longDescription && longDescription.en ? longDescription.en : "No description available"}\n`, sans);
-        helpMessage += apply(`├─────────────⟡ 🪄🪄\n`, sans);
+        helpMessage += apply(`├─────────────⟡ 🪄\n`, sans);
       }
 
       helpMessage += `├─ 𝙽𝚎𝚡𝚝 𝙿𝚊𝚐𝚎 𝚊𝚗𝚍 𝙲𝚖𝚍 𝚂𝚎𝚎 𝚢𝚘𝚞🔎: ${page}/${totalPages}\n`;
-      helpMessage += apply(`│ 👑 𝙼𝙰𝙳𝙴 𝚆𝙸𝚃𝙷 💜 𝙱𝚢 𝚂 𝙰 𝙽 𝙽 𝚈 💠🧍‍♂️\n`, sans);
-      helpMessage += apply(`╰───────────────⟡🪄🪄\n`, sans);
+      helpMessage += apply(`│ 👑 𝙼𝙰𝙳𝙴 𝚆𝙸𝚃𝙷 💜 𝙱𝚢 𝚂 𝙰 𝙽 𝙽 𝚈 \n`, sans);
+      helpMessage += apply(`╰───────────────⟡🪄\n`, sans);
 
       api.sendMessage({
         body: helpMessage,
