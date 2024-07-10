@@ -1,48 +1,38 @@
-const axios = require("axios");
+const axios = require('axios');
 
 module.exports = {
   config: {
     name: "goatmart",
-    aliases: ["market"],
+    version: "1.1",
+    author: "ArYAN",
+    countDown: 10,
+    role: 0,
     shortDescription: {
+      en: 'View items available in the market'
+    },
+    longDescription: {
       en: "View items available in the market."
     },
-    category: "Market",
-    usage: "{p}market [itemID]",
-    version: "1.5",
-    role: 0,
-    author: "LiANE",
+    category: "market",
+    guide: {
+      en: '${p}goatmart [ itemID ]'
+    }
   },
-  onStart: async ({ api, event, args, message }) => {
-    const serverURL = "https://goatmart.nealianacagara.repl.co";
+
+  onStart: async function ({ api, event, args }) {
+    const serverURL = "https://goatmart-api.onrender.com";
 
     try {
       if (!args[0]) {
-        api.sendMessage(`〖 𝗚𝗼𝗮𝘁𝗠𝗮𝗿𝘁 〗
-━━━━━━━━━━━━━━━
-Available Choices:
--> ${event.body} page < page number >
--> ${event.body} code < item ID >
--> ${event.body} show < item ID >`, event.threadID, event.messageID);
+        api.sendMessage(`〖 𝗚𝗼𝗮𝘁𝗠𝗮𝗿𝘁 〗\n━━━━━━━━━━━━━━━\n\nAvailable Choices:\n-> ${event.body} page < page number >\n-> ${event.body} code < item ID >\n-> ${event.body} show < item ID >\n-> ${event.body} upload < item details in JSON format >`, event.threadID);
       } else if (args[0] === "code") {
-        const itemID = args[1];
-        const response = await axios.get(`${serverURL}/api/items/${itemID}`, {
-          params: {
-            itemID: itemID
-          }
-        });
-        const code = response.data.code;
+        const itemID = isNaN(args[1]) ? args[1] : parseInt(args[1]);
+        const response = await axios.get(`${serverURL}/api/items/${itemID}`);
         const codeX = await axios.get(response.data.pastebinLink);
-const codeExtracted = codeX.data;
+        const codeExtracted = codeX.data;
 
-        if (code || codeX ) {
-          message.reply(`〖 𝗚𝗼𝗮𝘁𝗠𝗮𝗿𝘁 〗
-━━━━━━━━━━━━━━━
-Item Name: ${response.data.itemName}
-Item ID: ${response.data.itemID}
-Type: ${response.data.type || 'GoatBot' }
-Item Code: 
-${codeExtracted }`);
+        if (codeExtracted) {
+          api.sendMessage(`〖 𝗚𝗼𝗮𝘁𝗠𝗮𝗿𝘁 〗\n━━━━━━━━━━━━━━━\n\nItem Name: ${response.data.itemName}\nItem ID: ${response.data.itemID}\nType: ${response.data.type || 'GoatBot' }\nAuthor: ${response.data.authorName}\nAdded on: ${new Date(response.data.timestamp).toLocaleString()}Item Code: \n${codeExtracted}`, event.threadID);
         } else {
           api.sendMessage("Item not found.", event.threadID);
         }
@@ -63,39 +53,80 @@ ${codeExtracted }`);
               `Item Name: ${item.itemName}
 Item ID: ${item.itemID}
 Description: ${item.description}
+Author: ${item.authorName}
+Added on: ${new Date(item.timestamp).toLocaleString()}
 `
           );
-          const itemInfo = itemDescriptions.join(`
-`);
+          const itemInfo = itemDescriptions.join(`\n`);
 
-          message.reply(`〖 𝗚𝗼𝗮𝘁𝗠𝗮𝗿𝘁 〗
-━━━━━━━━━━━━━━━
-Items available in the market:
-
-${itemInfo}Use ${event.body.split(" ")[0]} [ show | code ] <item id> to view pastebin link or code.
-
-Page: [ ${pageNumber} / ${totalPages} ]`);
+          api.sendMessage(`〖 𝗚𝗼𝗮𝘁𝗠𝗮𝗿𝘁 〗\n━━━━━━━━━━━━━━━\n\nItems available in the market:\n${itemInfo}Use ${event.body.split(" ")[0]} [ show | code ] <item id> to view pastebin link or code.\nPage: [ ${pageNumber} / ${totalPages} ]`, event.threadID);
         }
       } else if (args[0] === "show") {
-        const itemID = args[1];
+        const itemID = isNaN(args[1]) ? args[1] : parseInt(args[1]);
         const response = await axios.get(`${serverURL}/api/items/${itemID}`);
         const item = response.data;
 
         if (item && itemID) {
-          message.reply(`〖 𝗚𝗼𝗮𝘁𝗠𝗮𝗿𝘁 〗
-━━━━━━━━━━━━━━━
-Item Name: ${item.itemName}
-Item ID: ${item.itemID}
-Type: ${item.type || " GoatBot"}
-Description: ${item.description}
-Pastebin Link: ${item.pastebinLink}`);
+          api.sendMessage(`〖 𝗚𝗼𝗮𝘁𝗠𝗮𝗿𝘁 〗
+━━━━━━━━━━━━━━━\n\nItem Name: ${item.itemName}\nItem ID: ${item.itemID}\nType: ${item.type || " GoatBot"}\nDescription: ${item.description}\nAuthor: ${item.authorName}\nAdded on: ${new Date(item.timestamp).toLocaleString()}\nPastebin Link: ${item.pastebinLink}`, event.threadID);
         } else {
           api.sendMessage("Item not found.", event.threadID);
         }
+      } else if (args[0] === "author") {
+        const authorName = args[1];
+        const response = await axios.get(`${serverURL}/api/items/author/${authorName}`);
+        const authorItems = response.data;
+
+        if (authorItems.length > 0) {
+          const itemDescriptions = authorItems.map(
+            (item) =>
+              `\nItem Name: ${item.itemName}
+Item ID: ${item.itemID}
+Description: ${item.description}
+Added on: ${new Date(item.timestamp).toLocaleString()}
+`
+          );
+          const itemInfo = itemDescriptions.join("\n");
+
+          api.sendMessage(`〖 𝗚𝗼𝗮𝘁𝗠𝗮𝗿𝘁 〗\n━━━━━━━━━━━━━━━\n\nItems by ${authorName}\n${itemInfo}`, event.threadID);
+        } else {
+          api.sendMessage(`〖 𝗚𝗼𝗮𝘁𝗠𝗮𝗿𝘁 〗\n━━━━━━━━━━━━━━━\n\nNo items found for this author.`, event.threadID);
+        }
+      } else if (args[0] === "edit") {
+        const itemID = isNaN(args[1]) ? args[1] : parseInt(args[1]);
+        const newItemDetails = JSON.parse(args.slice(2).join(" "));
+        const response = await axios.put(`${serverURL}/api/items/${itemID}`, newItemDetails);
+        api.sendMessage(`〖 𝗚𝗼𝗮𝘁𝗠𝗮𝗿𝘁 〗
+━━━━━━━━━━━━━━━\n\nItem edited successfully\nItem ID: ${response.data.itemID}\nItem Name: ${response.data.itemName}`, event.threadID);
+      } else if (args[0] === "upload") {
+        const itemDetails = JSON.parse(args.slice(1).join(" "));
+        const response = await axios.post(`${serverURL}/api/items`, itemDetails);
+        api.sendMessage(`〖 𝗚𝗼𝗮𝘁𝗠𝗮𝗿𝘁 〗\n━━━━━━━━━━━━━━━\n\nItem uploaded successfully\nItem ID: ${response.data.itemID}\nItem Name: ${response.data.itemName}`, event.threadID);
+      } else if (args[0] === "search") {
+        const searchTerm = args.slice(1).join(" ").toLowerCase();
+        const response = await axios.get(`${serverURL}/api/items`);
+        const items = response.data;
+        const matchingItems = items.filter(item => item.itemName.toLowerCase().includes(searchTerm) || item.description.toLowerCase().includes(searchTerm));
+
+        if (matchingItems.length > 0) {
+          const itemDescriptions = matchingItems.map(item => `\nItem Name: ${item.itemName}
+Item ID: ${item.itemID}
+Description: ${item.description}
+Author: ${item.authorName}
+Added on: ${new Date(item.timestamp).toLocaleString()}
+`);
+          const itemInfo = itemDescriptions.join("\n");
+
+          api.sendMessage(`〖 𝗚𝗼𝗮𝘁𝗠𝗮𝗿𝘁 〗\n━━━━━━━━━━━━━━━\n\nSearch Results for ${searchTerm}\n${itemInfo}`, event.threadID);
+        } else {
+          api.sendMessage("〖 𝗚𝗼𝗮𝘁𝗠𝗮𝗿𝘁 〗\n━━━━━━━━━━━━━━━\n\nNo items found matching the search term.", event.threadID);
+        }
+      } else {
+        api.sendMessage("〖 𝗚𝗼𝗮𝘁𝗠𝗮𝗿𝘁 〗\n━━━━━━━━━━━━━━━\n\nInvalid command.", event.threadID);
       }
     } catch (error) {
       console.error("Error fetching items:", error);
-      api.sendMessage("Invalid Item ID" + error.message, event.threadID);
+      api.sendMessage("❌| You are using invalid format!" + error.message, event.threadID);
     }
   },
 };
