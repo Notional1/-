@@ -64,16 +64,16 @@ module.exports = {
       const startIndex = (page - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;
 
-      let helpMessage = `👑⚜️| 𝗦𝗔𝗡𝗡𝗬 𝗕𝗢𝗧 👑⚜️\n\n`;
+      let helpMessage = `👑🎓| 𝗦𝗔𝗡𝗡𝗬 𝗕𝗢𝗧 👑🎓\n\n`;
       for (let i = startIndex; i < endIndex && i < commands.length; i++) {
         const { name, role, longDescription } = commands[i].config;
-        helpMessage += apply(`├─${role === 2 ? "👑 | " : "⚔️ | "}${name}\n`, bold);
+        helpMessage += apply(`├─${role === 2 ? "👑 | " : "📖✍︎ | "}${name}\n`, bold);
         helpMessage += apply(`│    ${longDescription && longDescription.en ? longDescription.en : "No description available"}\n`, sans);
         helpMessage += apply(`├─────────────⟡🪄\n`, sans);
       }
 
-      helpMessage += `├─🪧 Total Pages: ${page}/${totalPages}\n`;
-      helpMessage += apply(`│ 👑 𝖬𝖺𝖽𝖾 𝗐𝗂𝗍𝗁 💜 𝗕𝘆 𝗦𝗮𝗡𝗻𝗬\n`, sans);
+      helpMessage += `├─☠︎︎ Total Pages: ${page}/${totalPages}\n`;
+      helpMessage += apply(`│ 👑 𝖬𝖺𝖽𝖾 𝗐𝗂𝗍𝗁 💜 𝗕𝘆 𝗦𝗮𝗡𝗻𝗬☕︎\n`, sans);
       helpMessage += apply(`╰───────────────🪄⟡\n`, sans);
 
       api.sendMessage({
