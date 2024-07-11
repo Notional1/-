@@ -31,7 +31,7 @@ module.exports = {
   config: {
     name: "help",
     version: "1.0",
-    author: "ArYAN © GoatStore",//don't change my credits please 
+    author: "ArYAN © modified by SaNnY", //don't change my credits please 
     countDown: 5,
     role: 0,
     longDescription: {
@@ -49,14 +49,21 @@ module.exports = {
         .readdirSync(path.join(__dirname, '..', 'cmds'))
         .filter((file) => file.endsWith(".js"));
 
-      const commands = commandFiles.map(file => require(path.join(__dirname, '..', 'cmds', file)));
+      const commands = commandFiles.map(file => {
+        try {
+          return require(path.join(__dirname, '..', 'cmds', file));
+        } catch (err) {
+          console.error(`Error loading command ${file}:`, err);
+          return null;
+        }
+      }).filter(cmd => cmd !== null);
 
-      const itemsPerPage = 16; // Number of commands to show per page
+      const itemsPerPage = 10; // Number of commands to show per page
       const totalPages = Math.ceil(commands.length / itemsPerPage);
 
       let page = 1;
       if (args.length > 0 && !isNaN(args[0])) {
-        page = parseInt(args[0], 16);
+        page = parseInt(args[0], 10);
         if (page < 1) page = 1;
         if (page > totalPages) page = totalPages;
       }
@@ -64,20 +71,30 @@ module.exports = {
       const startIndex = (page - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;
 
-      let helpMessage = `👑🎓| 𝗦𝗔𝗡𝗡𝗬 𝗕𝗢𝗧 👑🎓\n\n`;
+      let helpMessage = `|🦅🪄 𝗦 𝗮 𝗡 𝗻 𝗬 𝗕𝗼𝗧 🪄🦅\n\n`;
       for (let i = startIndex; i < endIndex && i < commands.length; i++) {
         const { name, role, longDescription } = commands[i].config;
-        helpMessage += apply(`├─${role === 2 ? "👑 | " : "🎪𓀬| "}${name}\n`, bold);
+        helpMessage += apply(`├─${role === 2 ? "👑 | " : "🍒🍓 | "}${name}\n`, bold);
         helpMessage += apply(`│    ${longDescription && longDescription.en ? longDescription.en : "No description available"}\n`, sans);
-        helpMessage += apply(`├─────────────⟡🪄\n`, sans);
+        helpMessage += apply(`├─────────────✨⟡🔏\n`, sans);
       }
 
-      helpMessage += `├─☠︎︎ Total Pages: ${page}/${totalPages}\n`;
-      helpMessage += apply(`│ 👑 𝖬𝖺𝖽𝖾 𝗐𝗂𝗍𝗁 💜 𝗕𝘆 𝗦𝗮𝗡𝗻𝗬👑\n`, sans);
-      helpMessage += apply(`╰───────────────🪄⟡\n`, sans);
+      helpMessage += `├─🍎🍒 𝗧𝗼𝘁𝗮𝗹 𝗽𝗮𝗴𝗲 𝗡𝗲𝘅𝘁 𝗦𝗲𝗲 𝘆𝗼𝘂: ${page}/${totalPages}\n`;
+      helpMessage += apply(`│ 👑 𝗠𝗮𝗱𝗲 𝗪𝗶𝘁𝗵 💜 𝖻𝗒 𝗦 𝗮 𝗡 𝗻 𝗬 💚✍️\n`, sans);
+      helpMessage += apply(`╰───────────────✨⟡🔏\n`, sans);
+
+      const helpListImages = [
+        "https://i.imgur.com/jxfRX2J.jpeg",
+        "https://i.imgur.com/EBXZLSy.jpeg",
+        "https://i.imgur.com/rCjCA4o.jpeg",
+        "https://i.imgur.com/kC6DZsy.mp4", 
+      ];
+
+      const helpListImage = helpListImages[Math.floor(Math.random() * helpListImages.length)];
 
       api.sendMessage({
         body: helpMessage,
+        attachment: await global.utils.getStreamFromURL(helpListImage)
       }, event.threadID, event.messageID);
 
     } catch (error) {
