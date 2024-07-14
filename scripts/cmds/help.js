@@ -74,7 +74,7 @@ module.exports = {
       let helpMessage = `|🦅 👑 𝗦 𝗮 𝗡 𝗻 𝗬  𝗕𝗢𝗧 👑 🦅\n\n`;
       for (let i = startIndex; i < endIndex && i < commands.length; i++) {
         const { name, role, longDescription } = commands[i].config;
-        helpMessage += apply(`├─${role === 2 ? "👑 | " : "🐒🦫 | "}${name}\n`, bold);
+        helpMessage += apply(`├─${role === 2 ? "👑 | " : "🐒🍍 | "}${name}\n`, bold);
         helpMessage += apply(`│    ${longDescription && longDescription.en ? longDescription.en : "No description available"}\n`, sans);
         helpMessage += apply(`├─────────────✨🦅\n`, sans);
       }
