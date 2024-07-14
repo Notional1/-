@@ -74,13 +74,13 @@ module.exports = {
       let helpMessage = `|🦅 👑 𝗦 𝗮 𝗡 𝗻 𝗬  𝗕𝗢𝗧 👑 🦅\n\n`;
       for (let i = startIndex; i < endIndex && i < commands.length; i++) {
         const { name, role, longDescription } = commands[i].config;
-        helpMessage += apply(`├─${role === 2 ? "👑 | " : "🔖🏷️ | "}${name}\n`, bold);
+        helpMessage += apply(`├─${role === 2 ? "👑 | " : "🐒🦫 | "}${name}\n`, bold);
         helpMessage += apply(`│    ${longDescription && longDescription.en ? longDescription.en : "No description available"}\n`, sans);
         helpMessage += apply(`├─────────────✨🦅\n`, sans);
       }
 
       const totalCommands = commands.length;
-      helpMessage += `├─🕯️𝗧𝗼𝘁𝗮𝗹 𝗖𝗼𝗺𝗺𝗮𝗻𝗱 ${totalCommands} 𝗧𝗼𝘁𝗮𝗹 𝗽𝗮𝗴𝗲⏰: ${page}/${totalPages}\n`;
+      helpMessage += `├─🕯️𝗧𝗼𝘁𝗮𝗹 𝗖𝗼𝗺𝗺𝗮𝗻𝗱 ${totalCommands} 𝗧𝗼𝘁𝗮𝗹 𝗽𝗮𝗴𝗲: ${page}/${totalPages}\n`;
       helpMessage += apply(`│ 👑 𝗠𝗮𝗱𝗲 𝗪𝗶𝘁𝗵 🔏⛱️ 𝗕𝘆 𝗦 𝗮 𝗡 𝗻 𝗬 ⛱️🔏\n`, sans);
       helpMessage += apply(`╰───────────────✨🦅\n`, sans);
 
